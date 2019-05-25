@@ -89,6 +89,7 @@ species <- 20
 # parameters for the stabilizing case
 R_stabilizing <- runif(species, 2, 2.5)
 alphas_stabilizing <- matrix(runif(species*species, .002, .005), ncol=species, nrow=species)
+# set intraspecific competition (i.e. all of the diagonal elements) higher than interspecific competition
 diag(alphas_stabilizing) <- .03
 
 # parameters for the neutral case

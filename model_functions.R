@@ -54,7 +54,7 @@ do.pop.both.BH <- function(R, alpha, N, zeta, sigma) {
 # alphas = competition coefficients
 # Nall = vector of population sizes of all species
 # N = focal species' population size at time t
-# N_next = population size at time t+1
+# N_next = population size at time t+1 for focal species
 do.com.dem.BH <- function(R, alphas, N, Nall) {
   N_next <- rpois(1, R*N/(1+sum(alphas*Nall)))
   return(N_next)
@@ -66,7 +66,7 @@ do.com.dem.BH <- function(R, alphas, N, Nall) {
 # alphas = competition coefficients
 # Nall = vector of population sizes of all species
 # N = focal species' population size at time t
-# N_next = population size at time t+1
+# N_next = population size at time t+1 for focal species
 # zeta = magnitude of the effect of env. stochasticity
 # sigma = environmental condition at time t
 do.com.env.BH <- function(R, alphas, N, Nall, zeta, sigma) {
@@ -84,7 +84,9 @@ do.com.env.BH <- function(R, alphas, N, Nall, zeta, sigma) {
 # zeta = magnitude of the effect of env. stochasticity
 # sigma = environmental condition at time t
 do.com.both.BH <- function(R, alphas, N, Nall, zeta, sigma) {
-  N_next <- rpois(1, max(R*N/(1+sum(alphas*Nall)) + N*zeta*sigma,0))
+  # if lambda ends up being negative due to environmental stochasticity
+  # set lambda to 0
+  N_next <- rpois(1, max(R*N/(1+sum(alphas*Nall)) + N*zeta*sigma, 0))
   return(N_next)
 }
 
@@ -94,7 +96,7 @@ do.com.both.BH <- function(R, alphas, N, Nall, zeta, sigma) {
 # alphas = competition coefficients
 # Nall = vector of population sizes of all species
 # N = focal species' population size at time t
-# N_next = population size at time t+1
+# N_next = population size at time t+1 for focal species
 # zeta = magnitude of the effect of env. stochasticity
 # sigma = environmental condition at time t
 # s = seedbank survival
@@ -102,8 +104,8 @@ do.com.both.BH <- function(R, alphas, N, Nall, zeta, sigma) {
 do.com.seedbank <- function(R, alphas, N, Nall, zeta, sigma, s, g) {
   germ <- g+zeta*sigma
   if(germ < 0) {germ <- 0}
-  if(germ>1) {germ <- 1}
-  N_next <- N*s*(1-germ) +germ*R*N/(1+sum(alphas*Nall))
+  if(germ > 1) {germ <- 1}
+  N_next <- N*s*(1-germ) + germ*R*N/(1+sum(alphas*Nall))
   return(N_next)
 }
 

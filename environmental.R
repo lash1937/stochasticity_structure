@@ -25,8 +25,8 @@ for (t in 1:(time-1)) {
 }
 
 # density independent growth rates
-R1 <- 1.5     # speices 1
-R2 <- 1.5     # speices 1
+R1 <- 1.5     # species 1
+R2 <- 1.5     # species 2
 # intraspecific competition coefficients
 alpha1 <- .05
 alpha2 <- .05
